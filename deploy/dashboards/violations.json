@@ -1,0 +1,65 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(policy_violations_total[5m])) by (policy)",
+          "refId": "A"
+        }
+      ],
+      "title": "Violations per Policy (Rate)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(webhook_request_duration_ms_bucket[5m])) by (le))",
+          "refId": "A"
+        }
+      ],
+      "title": "Webhook Latency p95",
+      "type": "timeseries"
+    }
+  ],
+  "title": "Kube-Policy-Engine",
+  "uid": "kpe-violations",
+  "version": 1
+}
