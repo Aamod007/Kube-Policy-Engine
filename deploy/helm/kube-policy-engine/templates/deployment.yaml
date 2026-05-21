@@ -8,13 +8,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      serviceAccountName: {{ include "kube-policy-engine.fullname" . }}
       app.kubernetes.io/name: {{ include "kube-policy-engine.name" . }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "kube-policy-engine.name" . }}
     spec:
+      serviceAccountName: {{ include "kube-policy-engine.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

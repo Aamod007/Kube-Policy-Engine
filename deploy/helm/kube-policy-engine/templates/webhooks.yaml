@@ -11,6 +11,7 @@ webhooks:
         name: {{ include "kube-policy-engine.fullname" . }}
         namespace: {{ .Release.Namespace }}
         path: /validate
+        port: 8443
     rules:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: ["*"]
@@ -33,6 +34,7 @@ webhooks:
         name: {{ include "kube-policy-engine.fullname" . }}
         namespace: {{ .Release.Namespace }}
         path: /mutate
+        port: 8443
     rules:
       - operations: ["CREATE", "UPDATE"]
         apiGroups: ["*"]
