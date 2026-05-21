@@ -1,0 +1,7 @@
+{{- $files := .Files.Glob "policies/*/policy.yaml" }}
+{{- if $files }}
+{{- range $path, $bytes := $files }}
+---
+{{ $bytes | toString }}
+{{- end }}
+{{- end }}

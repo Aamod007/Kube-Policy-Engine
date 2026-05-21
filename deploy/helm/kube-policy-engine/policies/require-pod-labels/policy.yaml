@@ -1,0 +1,22 @@
+apiVersion: policy.k8spe.io/v1alpha1
+kind: Policy
+metadata:
+  name: require-pod-labels
+spec:
+  mode: audit
+  targets:
+    - apiGroups: [""]
+      resources: ["pods"]
+      operations: ["CREATE", "UPDATE"]
+  rego: |
+    package k8spe
+    deny[msg] {
+      labels := input.request.object.metadata.labels
+      not labels["app"]
+      msg := "Pod is missing the 'app' label"
+    }
+    deny[msg] {
+      not input.request.object.metadata.labels
+      msg := "Pod is missing the 'app' label"
+    }
+  message: "All pods must define an 'app' label"

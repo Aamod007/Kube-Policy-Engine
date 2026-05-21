@@ -1,0 +1,43 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ include "kube-policy-engine.fullname" . }}-validating
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "kube-policy-engine.fullname" . }}-cert
+webhooks:
+  - name: validate.policy.k8spe.io
+    clientConfig:
+      service:
+        name: {{ include "kube-policy-engine.fullname" . }}
+        namespace: {{ .Release.Namespace }}
+        path: /validate
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*"]
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+    failurePolicy: Ignore
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "kube-policy-engine.fullname" . }}-mutating
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "kube-policy-engine.fullname" . }}-cert
+webhooks:
+  - name: mutate.policy.k8spe.io
+    clientConfig:
+      service:
+        name: {{ include "kube-policy-engine.fullname" . }}
+        namespace: {{ .Release.Namespace }}
+        path: /mutate
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*"]
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+    failurePolicy: Ignore

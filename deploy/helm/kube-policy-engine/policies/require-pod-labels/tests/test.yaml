@@ -1,0 +1,9 @@
+policy: require-pod-labels
+cases:
+  - name: "reject pod missing app label"
+    input: missing-labels.json
+    expect: deny
+    message: "Pod is missing the 'app' label"
+  - name: "allow pod with app label"
+    input: has-labels.json
+    expect: allow

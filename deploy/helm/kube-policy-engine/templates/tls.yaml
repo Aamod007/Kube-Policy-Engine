@@ -1,0 +1,24 @@
+{{- if .Values.certManager.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "kube-policy-engine.fullname" . }}-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "kube-policy-engine.fullname" . }}-cert
+spec:
+  secretName: {{ include "kube-policy-engine.fullname" . }}-cert
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  issuerRef:
+    name: {{ include "kube-policy-engine.fullname" . }}-issuer
+    kind: Issuer
+  dnsNames:
+    - {{ include "kube-policy-engine.fullname" . }}
+    - {{ include "kube-policy-engine.fullname" . }}.{{ .Release.Namespace }}
+    - {{ include "kube-policy-engine.fullname" . }}.{{ .Release.Namespace }}.svc
+{{- end }}

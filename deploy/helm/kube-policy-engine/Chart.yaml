@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kube-policy-engine
+description: A Helm chart for Kube-Policy-Engine Admission Controller
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

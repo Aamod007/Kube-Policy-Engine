@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: kube-policy-engine
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8443
+  metricsPort: 9090
+
+certManager:
+  enabled: true
+  issuerRef:
+    name: "kube-policy-engine-issuer"
+    kind: "Issuer"
